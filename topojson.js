@@ -494,6 +494,20 @@
 
   function transformAbsolute(transform) {
     if (!transform) return noop;
+    if (transform.base) {
+      var x0, y0,
+          b0 = transform.base[0],
+          b1 = transform.base[1],
+          s0 = transform.scale[0],
+          s1 = transform.scale[1];
+      return function(point,i) {
+        if(!i) x0 = y0 = 0;
+        x0 += point[0];
+        y0 += point[1];
+        point[0] = s0 * x0 * b0[0] + s1*y0*b1[0];
+        point[1] = s0 * x0 * b0[1] + s1*y0*b1[1];
+      };
+    }
     var x0,
         y0,
         kx = transform.scale[0],
